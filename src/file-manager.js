@@ -16,6 +16,7 @@ const rl = createInterface({
 
 rl.prompt()
 
+// move after
 const inputHandler = async (data) => {
   const { command, argumentsArray } = parseInput(data)
   
