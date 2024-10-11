@@ -3,6 +3,7 @@ import { homedir } from 'node:os'
 
 import { logCurrentPath, messageColors, parseInput } from './helpers/index.js'
 import { cd, list, up } from './utils/nwd/index.js'
+import { cat } from './utils/fs/index.js'
 
 const userName = process.env.npm_config_username ?? 'Guest'
 let currentPath = homedir()
@@ -29,10 +30,13 @@ const inputHandler = async (data) => {
         currentPath = up(currentPath)
         break
       case 'cd':
-        currentPath = await cd(argumentsArray?.[ 0 ])
+        currentPath = await cd(currentPath, argumentsArray?.[ 0 ])
         break
       case 'ls':
         await list(currentPath)
+        break
+      case 'cat':
+        await cat(argumentsArray?.[ 0 ])
         break
       default :
         console.error(`\nInvalid input\n`)

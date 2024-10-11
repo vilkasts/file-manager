@@ -1,9 +1,8 @@
 import { access } from 'node:fs/promises'
 import { resolve } from 'node:path'
 
-const cd = async (targetPath) => {
-  const resolvedPath = resolve(targetPath)
-  const currentPath = process.cwd()
+const cd = async (currentPath, targetPath) => {
+  const resolvedPath = resolve(targetPath ?? currentPath)
   
   try {
     await access(resolvedPath)
