@@ -1,13 +1,13 @@
 import { createInterface } from 'node:readline/promises'
 import { homedir } from 'node:os'
 
-import { logCurrentPath, parseInput } from './helpers/index.js'
-import { list } from './utils/fs/list.js'
+import { logCurrentPath, messageColors, parseInput } from './helpers/index.js'
+import { cd, list, up } from './utils/nwd/index.js'
 
 const userName = process.env.npm_config_username ?? 'Guest'
-const currentPath = homedir()
+let currentPath = homedir()
 
-console.log(`Welcome to the File Manager, ${userName}!`)
+console.log(messageColors.blue, `Welcome to the File Manager, ${userName}!`)
 logCurrentPath(currentPath)
 
 const rl = createInterface({
@@ -21,17 +21,21 @@ const inputHandler = async (data) => {
   const { command, argumentsArray } = parseInput(data)
   
   try {
-    // remove after
-    console.log('argumentsArray', argumentsArray)
     switch (command) {
       case '.exit':
         rl.close()
+        break
+      case 'up':
+        currentPath = up(currentPath)
+        break
+      case 'cd':
+        currentPath = await cd(argumentsArray?.[ 0 ])
         break
       case 'ls':
         await list(currentPath)
         break
       default :
-        console.log(`Invalid input\n`)
+        console.error(`\nInvalid input\n`)
         break
     }
     logCurrentPath(currentPath)
@@ -41,16 +45,14 @@ const inputHandler = async (data) => {
   }
 }
 
-
-
 rl
   .on('line', async (data) => await inputHandler(data.trim()))
   .on('SIGINT', () => {
-    rl.write(".exit")
+    rl.write('.exit')
     rl.close()
   })
   .on('close', () => {
-    console.log(`\nThank you for using File Manager, ${userName}, goodbye!\n`)
+    console.log(messageColors.blue, `\nThank you for using File Manager, ${userName}, goodbye!\n`)
     process.exit(0)
   })
   .on('error', () => {
