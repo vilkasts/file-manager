@@ -1,6 +1,6 @@
 const parseInput = (input) => {
-  const [command, ...args] = input.trim().split(/\s+/)
-  return { command, args }
+  const [command, ...argumentsArray] = input.trim().split(/\s+/)
+  return { command, argumentsArray }
 }
 
 export { parseInput }
