@@ -23,15 +23,12 @@ const rl = createInterface({
 
 rl.prompt()
 
-// move after
+// check the current path and move it away
 const inputHandler = async (data) => {
   const { command, argumentsArray } = parseInput(data)
   
   try {
     switch (command) {
-      case '.exit':
-        rl.close()
-        break
       case 'up':
         currentPath = up(currentPath)
         break
@@ -75,15 +72,18 @@ const inputHandler = async (data) => {
         console.error(`\nInvalid input\n`)
         break
     }
-    logCurrentPath(currentPath)
-    rl.prompt()
   } catch {
     throw new Error(`Operation failed`)
   }
 }
 
 rl
-  .on('line', async (data) => await inputHandler(data.trim()))
+  .on('line', async (data) => {
+    await inputHandler(data.trim())
+    logCurrentPath(currentPath)
+    rl.prompt()
+    data.trim().startsWith('.exit') && rl.close()
+  })
   .on('SIGINT', () => {
     rl.write('.exit')
     rl.close()
