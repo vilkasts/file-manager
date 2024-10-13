@@ -3,7 +3,7 @@ import { homedir } from 'node:os'
 
 import { logCurrentPath, messageColors, parseInput } from './helpers/index.js'
 import { cd, list, up } from './utils/nwd/index.js'
-import { cat } from './utils/fs/index.js'
+import { add, cat } from './utils/fs/index.js'
 import { os } from './utils/os/index.js'
 import { hash } from './utils/hash/index.js'
 
@@ -40,6 +40,9 @@ const inputHandler = async (data) => {
         break
       case 'cat':
         await cat(argumentsArray?.[ 0 ])
+        break
+      case 'add':
+        await add(currentPath, argumentsArray?.[ 0 ])
         break
       case 'os':
         os(argumentsArray?.[ 0 ])
