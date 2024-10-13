@@ -6,12 +6,15 @@ import { cd, list, up } from './utils/nwd/index.js'
 import { add, cat, cp, mv, rm, rn } from './utils/fs/index.js'
 import { os } from './utils/os/index.js'
 import { hash } from './utils/hash/index.js'
+import { compress, decompress } from './utils/archive/index.js'
 
 const userName = process.env.npm_config_username ?? 'Guest'
 let currentPath = homedir()
+
 process.chdir(currentPath)
 
 console.log(messageColors.blue, `Welcome to the File Manager, ${userName}!`)
+
 logCurrentPath(currentPath)
 
 const rl = createInterface({
@@ -61,6 +64,12 @@ const inputHandler = async (data) => {
         break
       case 'hash':
         await hash(argumentsArray?.[ 0 ])
+        break
+      case 'compress':
+        await compress(argumentsArray?.[ 0 ], argumentsArray?.[ 1 ])
+        break
+      case 'decompress':
+        await decompress(argumentsArray?.[ 0 ], argumentsArray?.[ 1 ])
         break
       default :
         console.error(`\nInvalid input\n`)
