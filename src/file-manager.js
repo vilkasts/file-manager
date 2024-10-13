@@ -5,6 +5,7 @@ import { logCurrentPath, messageColors, parseInput } from './helpers/index.js'
 import { cd, list, up } from './utils/nwd/index.js'
 // import { cat } from './utils/fs/index.js'
 import { os } from './utils/os/index.js'
+import { hash } from './utils/hash/index.js'
 
 const userName = process.env.npm_config_username ?? 'Guest'
 let currentPath = homedir()
@@ -41,7 +42,10 @@ const inputHandler = async (data) => {
       //   await cat()
       //   break
       case 'os':
-        await os(argumentsArray?.[ 0 ])
+        os(argumentsArray?.[ 0 ])
+        break
+      case 'hash':
+        await hash(argumentsArray?.[ 0 ])
         break
       default :
         console.error(`\nInvalid input\n`)
