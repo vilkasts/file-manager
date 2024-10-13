@@ -7,12 +7,12 @@ const hash = async (targetPath) => {
   
   try {
     const hash = createHash('sha256')
-    const data = await readFile(resolvedPath, { flag: 'wx' })
+    const data = await readFile(resolvedPath)
     const hashHex = hash.update(data).digest('hex')
     
     console.log(hashHex)
   } catch {
-    console.error(`\nInvalid input\n`)
+    console.error(`\nInvalid input: Please try another file path\n`)
   }
   
 }

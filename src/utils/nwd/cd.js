@@ -10,7 +10,7 @@ const cd = async (currentPath, targetPath) => {
     
     return resolvedPath
   } catch {
-    console.error(`Incorrect path: "${resolvedPath}", please try a different one`)
+    console.error(`\nInvalid input: Please try another directory path\n`)
   }
   
   return currentPath

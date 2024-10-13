@@ -21,7 +21,7 @@ const os = (argument) => {
       console.log(arch())
       break
     default:
-      console.log('Invalid flag. Please use one of available flags:\n ' + '--EOL, --cpus, --homedir, --username, --architecture')
+      console.error('Invalid input: Please try another flag')
   }
 }
 
