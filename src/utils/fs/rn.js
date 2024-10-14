@@ -2,6 +2,8 @@ import constants from 'node:constants'
 import { access, rename } from 'node:fs/promises'
 import { dirname, join, resolve } from 'node:path'
 
+import { messageColors } from '../../helpers/constants/constants.js'
+
 const rn = async (filePath, newFileName) => {
   const resolvedPath = resolve(filePath ?? '')
   const currentDirPath = dirname(resolvedPath)
@@ -9,12 +11,12 @@ const rn = async (filePath, newFileName) => {
   
   try {
     await access(newFilePath, constants.F_OK)
-    console.error(`\nInvalid input: File with the same name already exists\n`)
+    console.error(messageColors.red, `\nInvalid input: File with the same name already exists\n`)
   } catch {
     try {
       await rename(resolvedPath, newFilePath)
     } catch (error) {
-      console.error(`\nInvalid input: Please try another file path\n`)
+      console.error(messageColors.red, `\nInvalid input: Please try another file path\n`)
     }
   }
 }

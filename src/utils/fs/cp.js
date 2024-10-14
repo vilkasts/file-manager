@@ -4,6 +4,8 @@ import { access } from 'node:fs/promises'
 import { createReadStream, createWriteStream } from 'node:fs'
 import { basename, join, resolve } from 'node:path'
 
+import { messageColors } from '../../helpers/constants/constants.js'
+
 const cp = async (filePath, targetDirPath) => {
   const resolvedFilePath = resolve(filePath ?? '')
   const resolvedTargetDirPath = resolve(targetDirPath ?? '')
@@ -17,7 +19,7 @@ const cp = async (filePath, targetDirPath) => {
     
     await pipeline(readStream, writeStream)
   } catch {
-    console.error(`\nInvalid input: File already exists or incorrect file path or destination folder path\n`)
+    console.error(messageColors.red, `\nInvalid input: File already exists or incorrect file path or destination folder path\n`)
   }
 }
 

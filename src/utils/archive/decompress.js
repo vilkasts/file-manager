@@ -5,6 +5,8 @@ import { createReadStream, createWriteStream } from 'node:fs'
 import { basename, extname, join, resolve } from 'node:path'
 import { createBrotliDecompress } from 'node:zlib'
 
+import { messageColors } from '../../helpers/constants/constants.js'
+
 const decompress = async (filePath, destinationPath) => {
   const resolvedFilePath = resolve(filePath ?? '')
   const resolvedTargetDirPath = resolve(destinationPath ?? '')
@@ -21,7 +23,7 @@ const decompress = async (filePath, destinationPath) => {
     
     await pipeline(readStream, brotliCompress, writeStream)
   } catch {
-    console.error(`\nInvalid input: File already exists or incorrect file path or destination folder path\n`)
+    console.error(messageColors.red, `\nInvalid input: File already exists or incorrect file path or destination folder path\n`)
   }
 }
 

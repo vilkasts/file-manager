@@ -12,7 +12,7 @@ const list = async (currentPath) => {
       .map(dirent => {
         return { Name: dirent.name, Type: dirent.isFile() ? 'file' : 'directory' }
       })
-      .toSorted((a, b) => {
+      .sort((a, b) => {
         return (a.Type === 'directory' ? 0 : 1) - (b.Type === 'directory' ? 0 : 1)
       })
     

@@ -1,4 +1,4 @@
-import { commands, errors } from '../constants/constants.js'
+import { commands, errors, messageColors } from '../constants/constants.js'
 import { cd, list, up } from '../../utils/nwd/index.js'
 import { add, cat, cp, mv, rm, rn } from '../../utils/fs/index.js'
 import { os } from '../../utils/os/index.js'
@@ -51,7 +51,7 @@ const inputHandler = async (data, currentPath) => {
         await decompress(argumentsArray?.[0], argumentsArray?.[1])
         break
       default :
-        console.error(errors.invalidInput)
+        console.error(messageColors.red, errors.invalidInput)
         break
     }
   } catch {
