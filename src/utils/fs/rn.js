@@ -1,6 +1,6 @@
+import constants from 'node:constants'
 import { access, rename } from 'node:fs/promises'
 import { dirname, join, resolve } from 'node:path'
-import constants from 'node:constants'
 
 const rn = async (filePath, newFileName) => {
   const resolvedPath = resolve(filePath ?? '')

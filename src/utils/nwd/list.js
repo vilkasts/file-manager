@@ -1,5 +1,7 @@
 import { readdir } from 'node:fs/promises'
 
+import { errors } from '../../helpers/constants/constants.js'
+
 const list = async (currentPath) => {
   try {
     const filenamesArray = await readdir(currentPath, { withFileTypes: true })
@@ -13,7 +15,7 @@ const list = async (currentPath) => {
     
     console.table(filesArray)
   } catch {
-    throw new Error('Operation failed')
+    throw new Error(errors.operationFailed)
   }
 }
 

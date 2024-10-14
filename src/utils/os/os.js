@@ -1,23 +1,25 @@
-import { EOL, homedir, userInfo, arch, cpus } from 'node:os'
+import { arch, cpus, EOL, homedir, userInfo } from 'node:os'
+
+import { osFlags } from '../../helpers/constants/constants.js'
 
 const os = (argument) => {
   switch (argument) {
-    case '--EOL':
+    case osFlags.eol:
       console.log(JSON.stringify(EOL))
       break
-    case '--cpus':
+    case osFlags.cpus:
       console.log(`CPUS quantity: ${cpus().length}`)
       cpus().map((cpu, index) => {
         console.log(`CPU ${index + 1}: ${cpu.model}, ${cpu.speed / 1000} GHz`)
       })
       break
-    case '--homedir':
+    case osFlags.homedir:
       console.log(homedir())
       break
-    case '--username':
+    case osFlags.username:
       console.log(userInfo().username)
       break
-    case '--architecture':
+    case osFlags.architecture:
       console.log(arch())
       break
     default:

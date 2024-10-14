@@ -1,6 +1,6 @@
+import constants from 'node:constants'
 import { access, unlink } from 'node:fs/promises'
 import { resolve } from 'node:path'
-import constants from 'node:constants'
 
 const rm = async (filePath) => {
   const resolvedPath = resolve(filePath ?? '')

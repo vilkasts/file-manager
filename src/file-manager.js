@@ -1,97 +1,38 @@
 import { createInterface } from 'node:readline/promises'
 import { homedir } from 'node:os'
 
-import { logCurrentPath, messageColors, parseInput } from './helpers/index.js'
-import { cd, list, up } from './utils/nwd/index.js'
-import { add, cat, cp, mv, rm, rn } from './utils/fs/index.js'
-import { os } from './utils/os/index.js'
-import { hash } from './utils/hash/index.js'
-import { compress, decompress } from './utils/archive/index.js'
+import { defaultUserName, errors, exitCmd, promptSymbol } from './helpers/constants/constants.js'
+import { inputHandler } from './helpers/input-handler/input-handler.js'
+import { logWelcomeMessage, logCurrentPath, logGoodbyeMessage } from './helpers/loggers/loggers.js'
 
-const userName = process.env.npm_config_username ?? 'Guest'
 let currentPath = homedir()
+const userName = process.env.npm_config_username ?? defaultUserName
 
 process.chdir(currentPath)
 
-console.log(messageColors.blue, `Welcome to the File Manager, ${userName}!`)
-
+logWelcomeMessage(userName)
 logCurrentPath(currentPath)
 
 const rl = createInterface({
-  input: process.stdin, output: process.stdout, prompt: '> '
+  input: process.stdin, output: process.stdout, prompt: promptSymbol
 })
 
 rl.prompt()
-
-// check the current path and move it away
-const inputHandler = async (data) => {
-  const { command, argumentsArray } = parseInput(data)
-  
-  try {
-    switch (command) {
-      case 'up':
-        currentPath = up(currentPath)
-        break
-      case 'cd':
-        currentPath = await cd(currentPath, argumentsArray?.[ 0 ])
-        break
-      case 'ls':
-        await list(currentPath)
-        break
-      case 'cat':
-        await cat(argumentsArray?.[ 0 ])
-        break
-      case 'add':
-        await add(currentPath, argumentsArray?.[ 0 ])
-        break
-      case 'rn':
-        await rn(argumentsArray?.[ 0 ], argumentsArray?.[ 1 ])
-        break
-      case 'cp':
-        await cp(argumentsArray?.[ 0 ], argumentsArray?.[ 1 ])
-        break
-      case 'mv':
-        await mv(argumentsArray?.[ 0 ], argumentsArray?.[ 1 ])
-        break
-      case 'rm':
-        await rm(argumentsArray?.[ 0 ])
-        break
-      case 'os':
-        os(argumentsArray?.[ 0 ])
-        break
-      case 'hash':
-        await hash(argumentsArray?.[ 0 ])
-        break
-      case 'compress':
-        await compress(argumentsArray?.[ 0 ], argumentsArray?.[ 1 ])
-        break
-      case 'decompress':
-        await decompress(argumentsArray?.[ 0 ], argumentsArray?.[ 1 ])
-        break
-      default :
-        console.error(`\nInvalid input\n`)
-        break
-    }
-  } catch {
-    throw new Error(`Operation failed`)
-  }
-}
-
 rl
   .on('line', async (data) => {
-    await inputHandler(data.trim())
+    data.trim().startsWith(exitCmd) && rl.close()
+    currentPath = await inputHandler(data.trim(), currentPath)
     logCurrentPath(currentPath)
     rl.prompt()
-    data.trim().startsWith('.exit') && rl.close()
   })
   .on('SIGINT', () => {
-    rl.write('.exit')
+    rl.write(exitCmd + '\n')
     rl.close()
   })
   .on('close', () => {
-    console.log(messageColors.blue, `\nThank you for using File Manager, ${userName}, goodbye!\n`)
+    logGoodbyeMessage(userName)
     process.exit(0)
   })
   .on('error', () => {
-    throw new Error(`Operation failed`)
+    throw new Error(errors.operationFailed)
   })

@@ -1,9 +1,9 @@
+import constants from 'node:constants'
 import { pipeline } from 'node:stream/promises'
 import { access } from 'node:fs/promises'
 import { createReadStream, createWriteStream } from 'node:fs'
-import { extname, resolve, join, basename } from 'node:path'
+import { basename, extname, join, resolve } from 'node:path'
 import { createBrotliDecompress } from 'node:zlib'
-import constants from 'node:constants'
 
 const decompress = async (filePath, destinationPath) => {
   const resolvedFilePath = resolve(filePath ?? '')
