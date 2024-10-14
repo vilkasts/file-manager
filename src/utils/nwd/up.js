@@ -1,15 +1,16 @@
-import { dirname, parse } from 'node:path'
+import { dirname, parse, resolve } from 'node:path'
 
 const up = (currentPath) => {
-  const parentDirPath = dirname(currentPath)
-  const { root } = parse(currentPath)
+  const resolvedPath = resolve(currentPath)
+  const parentDirPath = dirname(resolvedPath)
+  const { root } = parse(resolvedPath)
   
-  if (currentPath !== parentDirPath && currentPath !== root) {
+  if (resolvedPath !== parentDirPath && resolvedPath !== root) {
     process.chdir(parentDirPath)
     return parentDirPath
   }
   
-  return currentPath
+  return resolvedPath
 }
 
 export { up }
