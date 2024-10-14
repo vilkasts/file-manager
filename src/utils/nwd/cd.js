@@ -1,7 +1,7 @@
 import { access } from 'node:fs/promises'
 import { resolve } from 'node:path'
 
-import { messageColors } from '../../helpers/constants/constants.js'
+import { errorHandler } from '../../helpers/error-handler/error-handler.js'
 
 const cd = async (currentPath, targetPath) => {
   const resolvedPath = resolve(targetPath ?? currentPath)
@@ -11,8 +11,8 @@ const cd = async (currentPath, targetPath) => {
     process.chdir(resolvedPath)
     
     return resolvedPath
-  } catch {
-    console.error(messageColors.red, `\nInvalid input: Please try another directory path\n`)
+  } catch (error) {
+    errorHandler(error.code ?? '')
   }
   
   return currentPath

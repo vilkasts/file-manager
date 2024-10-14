@@ -2,7 +2,7 @@ import constants from 'node:constants'
 import { access, unlink } from 'node:fs/promises'
 import { resolve } from 'node:path'
 
-import { messageColors } from '../../helpers/constants/constants.js'
+import { errorHandler } from '../../helpers/error-handler/error-handler.js'
 
 const rm = async (filePath) => {
   const resolvedPath = resolve(filePath ?? '')
@@ -10,8 +10,8 @@ const rm = async (filePath) => {
   try {
     await access(resolvedPath, constants.F_OK)
     await unlink(resolvedPath)
-  } catch {
-    console.error(messageColors.red, `\nInvalid input: File doesn't exist, please try another file path\n`)
+  } catch (error) {
+    errorHandler(error.code ?? '')
   }
 }
 

@@ -1,7 +1,7 @@
 import { readdir } from 'node:fs/promises'
 import { resolve } from 'node:path'
 
-import { errors } from '../../helpers/constants/constants.js'
+import { errorHandler } from '../../helpers/error-handler/error-handler.js'
 
 const list = async (currentPath) => {
   const resolvedPath = resolve(currentPath ?? '')
@@ -17,8 +17,8 @@ const list = async (currentPath) => {
       })
     
     console.table(filesArray)
-  } catch {
-    throw new Error(errors.operationFailed)
+  } catch (error) {
+    errorHandler(error.code ?? '')
   }
 }
 

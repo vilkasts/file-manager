@@ -4,7 +4,7 @@ import { access, unlink } from 'node:fs/promises'
 import { createReadStream, createWriteStream } from 'node:fs'
 import { basename, join, resolve } from 'node:path'
 
-import { messageColors } from '../../helpers/constants/constants.js'
+import { errorHandler } from '../../helpers/error-handler/error-handler.js'
 
 const mv = async (filePath, targetDirPath) => {
   const resolvedFilePath = resolve(filePath ?? '')
@@ -20,7 +20,7 @@ const mv = async (filePath, targetDirPath) => {
     await pipeline(readStream, writeStream)
     await unlink(resolvedFilePath)
   } catch (error) {
-    console.error(messageColors.red, `\nInvalid input: File already exists or incorrect file path or destination folder path\n`)
+    errorHandler(error.code ?? '')
   }
 }
 

@@ -1,6 +1,6 @@
 import { arch, cpus, EOL, homedir, userInfo } from 'node:os'
 
-import { messageColors, osFlags } from '../../helpers/constants/constants.js'
+import { errors, messageColors, osFlags } from '../../helpers/constants/constants.js'
 
 const os = (argument) => {
   switch (argument) {
@@ -23,7 +23,7 @@ const os = (argument) => {
       console.log(arch())
       break
     default:
-      console.error(messageColors.red, 'Invalid input: Please try another flag')
+      console.error(messageColors.red, errors.incorrectFlag)
   }
 }
 
